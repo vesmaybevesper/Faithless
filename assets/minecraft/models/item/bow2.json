@@ -3,8 +3,8 @@
 	"parent": "item/bow0",
 	"textures": {
 		"1": "block/entity/arrow",
-		"layer0": "item/alt/bow_grip",
-		"string": "item/alt/bow_pulling_1"
+		"layer0": "block/alt/bow_grip",
+		"string": "block/alt/bow_pulling_1"
 	},
 	"elements": [
 		{

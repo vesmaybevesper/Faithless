@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "block/entity/arrow",
-		"layer0": "item/alt/bow_grip",
-		"string": "item/alt/bow_string"
+		"layer0": "block/alt/bow_grip",
+		"string": "block/alt/bow_string"
 	},
 	"elements": [
 		{
