@@ -4,7 +4,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"2": "block/powder_snow",
-		"2_1": "item/alt/powder_snow_bucket"
+		"2_1": "block/alt/powder_snow_bucket"
 	},
 	"elements": [
 		{
