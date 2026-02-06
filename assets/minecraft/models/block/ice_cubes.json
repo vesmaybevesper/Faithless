@@ -2,7 +2,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"0": "block/ice",
-		"1": "item/alt/ice",
+		"1": "block/alt/ice",
 		"particle": "block/ice"
 	},
 	"elements": [
