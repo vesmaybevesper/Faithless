@@ -2,6 +2,6 @@
   "parent": "block/cube_transparent_waxed",
 	"textures": {
 		"all": "block/exposed_copper_grate",
-		"inner": "item/alt/exposed_copper_grate_inner"
+		"inner": "block/alt/exposed_copper_grate_inner"
 	}
 }
