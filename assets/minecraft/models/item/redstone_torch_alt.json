@@ -4,7 +4,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"2": "block/redstone_torch",
-		"torch_flame_e": "item/alt/redstone_torch_flame"
+		"torch_flame_e": "block/alt/redstone_torch_flame"
 	},
 	"elements": [
 		{

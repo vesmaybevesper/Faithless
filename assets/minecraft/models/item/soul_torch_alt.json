@@ -3,6 +3,6 @@
 	"ambientocclusion": false,
 	"textures": {
 		"2": "block/soul_torch",
-		"torch_flame_e": "item/alt/soul_torch_flame"
+		"torch_flame_e": "block/alt/soul_torch_flame"
 	}
 }

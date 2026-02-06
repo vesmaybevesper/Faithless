@@ -2,7 +2,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"2": "block/torch",
-		"torch_flame_e": "item/alt/torch_flame"
+		"torch_flame_e": "block/alt/torch_flame"
 	},
 	"elements": [
 		{
