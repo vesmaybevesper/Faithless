@@ -1,7 +1,7 @@
 {
 	"parent": "block/template_vault",
 	"textures": {
-		"5": "item/trial_key",
+		"5": "block/alt/trial_key",
 		"particle": "block/vault_innerbottom",
 		"bottom": "block/vault_bottom",
 		"innerbottom": "block/vault_innerbottom",

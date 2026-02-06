@@ -6,7 +6,7 @@
 		"front": "block/vault_front_ejecting_ominous",
 		"side": "block/vault_side_on_ominous",
 		"top": "block/vault_top_ominous",
-		"particle": "item/ominous_trial_key"
+		"particle": "block/alt/ominous_trial_key"
 	},
 	"elements": [
 		{
