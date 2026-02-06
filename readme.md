@@ -2,8 +2,10 @@
 
 Current goal version: `1.21.11`
 
-## Stitch put whatever you want here for a description
+## A fresh take on the classic Minecraft.
 
+Trello board where it shows our progress:
+https://trello.com/b/nRVUgRIq/faithless-bug-tracker
 
 ## Guidelines for pushing:
 * Don't overwrite textures made by StitchSprites unless there's a VERY strong reason to!
