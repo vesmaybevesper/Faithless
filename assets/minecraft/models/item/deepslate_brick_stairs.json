@@ -2,6 +2,6 @@
 	"parent": "item/stone_brick_stairs",
 	"textures": {
 		"0": "block/deepslate_bricks_model",
-		"1": "item/alt/deepslate_brick_stairs"
+		"1": "block/alt/deepslate_brick_stairs"
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"parent": "block/stairs",
 	"textures": {
-		"1": "item/alt/stone_brick_stairs",
+		"1": "block/alt/stone_brick_stairs",
 		"particle": "block/stone_bricks_model",
 		"0": "block/stone_bricks_model"
 	},
