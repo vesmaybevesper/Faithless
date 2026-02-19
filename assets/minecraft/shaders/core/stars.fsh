@@ -12,7 +12,7 @@ void main() {
     float twinkle = cos((GameTime * 3000.0) + starPos.x + starPos.z);
 
     // Alpha = Brightness
-    color.a += twinkle * 0.5;
+    color.a += twinkle * 0.25;
 
     fragColor = color;
 }
