@@ -103,16 +103,16 @@ void main() {
 		default:
 		color *= vertexColor;
 
-		//vec3 dotLuminance = vertexLight.rgb * vec3(0.114, 0.299, 0.587);
-		//float luminance = dotLuminance.r + dotLuminance.g + dotLuminance.b;
-		//vec3 dotBrightness = color.rgb * vec3(0.299, 0.587, 0.114);
-		//float brightness = (dotBrightness.r + dotBrightness.g + dotBrightness.b);
-		//
-		//float lightFactor = mix(1.2, 0.0, smoothstep(0.0, 3.5, vertexDistance)) * (1.0 - luminance) + 1.2;
-		//
-		//color.rgb = mix(vec3(brightness * 0.5), color.rgb, luminance) * lightFactor;
+		vec3 dotLuminance = vertexLight.rgb * vec3(0.114, 0.299, 0.587);
+		float luminance = dotLuminance.r + dotLuminance.g + dotLuminance.b;
+		vec3 dotBrightness = color.rgb * vec3(0.299, 0.587, 0.114);
+		float brightness = (dotBrightness.r + dotBrightness.g + dotBrightness.b);
 
-		color *= vertexLight;
+		float lightFactor = mix(1.2, 0.0, smoothstep(0.0, 3.5, vertexDistance)) * (1.0 - luminance) + 1.2;
+
+		color.rgb = mix(vec3(brightness * 0.5), color.rgb, luminance) * lightFactor;
+
+		//color *= vertexLight;
 		break;
 	}
 	#ifdef ALPHA_CUTOUT
@@ -120,6 +120,6 @@ void main() {
 		discard;
 	}
 	#endif
-	fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
+	fragColor = color; //apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
 	fragColor.rgb = cone_filter(Colorblindness, fragColor.rgb);
 }
