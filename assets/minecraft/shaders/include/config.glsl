@@ -119,16 +119,16 @@
 		#define Emissives true  			//Textures appear to glow, but don't emit light.
 		#define Displacement true 			//Foliage and objects will be crushed under you
 		
-		#define Windowlogging true 			//Glass Panes & Iron Bars connect to slabs and stairs
-		#define Fencelogging true 			//Fences & Walls connect to slabs and stairs
-		#define Snowlogging true 			//Snow and Moss will connect to fences and panes
+		#define Windowlogging true 			//Glass Panes & Iron Bars connect to slabs and stairs //X
+		#define Fencelogging true 			//Fences & Walls connect to slabs and stairs          //X
+		#define Snowlogging true 			//Snow and Moss will connect to fences and panes      //X
 		#define Dynamic_Slopes true 		//Dynamic Snow and Moss
 		
-		#define Layered_Clouds true 		//Clouds will vary on Y level
+		#define Layered_Clouds true 		//Clouds will vary on Y level                         //X
 		#define Puffy_Clouds true 			//Clouds will look puffier and brighter
-		#define Sunken_Clouds true 			//Clouds will sink depending on weather and time
+		#define Sunken_Clouds true 			//Clouds will sink depending on weather and time      //X
 		
-		#define Big_Trees true 				//Gives 2x2 trees a unique texture
+		#define Big_Trees true 				//Gives 2x2 trees a unique texture                    //X
 		#define Block_Animations true		//Jukebox Disc, Beacon, and Creaking Heart
 		#define Ender_Chest true 			//Ender Chest End Portal Effect
 		#define Portal_Fog true 			//Gives the Nether portal ambient fog

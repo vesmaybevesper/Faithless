@@ -3,6 +3,7 @@
 #moj_import <dynamictransforms.glsl>
 #moj_import <frag_utils.glsl>
 #moj_import <config.glsl>
+#moj_import <globals.glsl>
 
 uniform sampler2D Sampler0;
 
