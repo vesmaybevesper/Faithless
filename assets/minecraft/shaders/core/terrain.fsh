@@ -17,6 +17,21 @@ in vec2 texCoord0;
 
 out vec4 fragColor;
 
+// Unpack a premultiplied-alpha sample back to straight alpha.
+// Transparent texels (alpha == 0) contribute zero color weight, so they
+// cannot bleed their RGB into opaque neighbours during filtering.
+vec4 unpremultiply(vec4 c) {
+	return vec4(c.a > 0.0 ? c.rgb / c.a : vec3(0.0), c.a);
+}
+
+// Sample and immediately convert to premultiplied alpha so that blending
+// across opaque/transparent borders is color-correct.
+vec4 samplePremul(sampler2D s, vec2 uv, vec2 du, vec2 dv, float lod) {
+	vec4 c = (lod < 0.0) ? textureGrad(s, uv, du, dv) : textureLod(s, uv, lod);
+	c.rgb *= c.a;   // premultiply
+	return c;
+}
+
 vec4 sampleNearest(sampler2D sampler, vec2 uv, vec2 pixelSize, vec2 du, vec2 dv, vec2 texelScreenSize) {
 	// Convert our UV back up to texel coordinates and find out how far over we are from the center of each pixel
 	vec2 uvTexelCoords = uv / pixelSize;
@@ -28,7 +43,8 @@ vec4 sampleNearest(sampler2D sampler, vec2 uv, vec2 pixelSize, vec2 du, vec2 dv,
 	texelOffset = clamp(texelOffset, 0.0f, 1.0f);
 
 	uv = (texelCenter + texelOffset) * pixelSize;
-	return textureGrad(sampler, uv, du, dv);
+	// Sample in premultiplied space then unpack — transparent texels carry no color.
+	return unpremultiply(samplePremul(sampler, uv, du, dv, -1.0));
 }
 
 vec4 sampleNearest(sampler2D source, vec2 uv, vec2 pixelSize) {
@@ -71,15 +87,17 @@ vec4 sampleRGSS(sampler2D source, vec2 uv, vec2 pixelSize) {
 	vec2(-0.375, 0.125)
 	);
 
+	// Accumulate in premultiplied-alpha space so transparent samples
+	// carry zero color weight — this eliminates the fringe/outline artefact.
 	vec4 rgssColorLow = vec4(0.0);
 	vec4 rgssColorHigh = vec4(0.0);
 	for (int i = 0; i < 4; ++i) {
 		vec2 sampleUV = uv + offsets[i] * pixelSize;
-		rgssColorLow += textureLod(source, sampleUV, mipLevelLow);
-		rgssColorHigh += textureLod(source, sampleUV, mipLevelHigh);
+		rgssColorLow  += samplePremul(source, sampleUV, du, dv, mipLevelLow);
+		rgssColorHigh += samplePremul(source, sampleUV, du, dv, mipLevelHigh);
 	}
-	rgssColorLow *= 0.25;
-	rgssColorHigh *= 0.25;
+	rgssColorLow  = unpremultiply(rgssColorLow  * 0.25);
+	rgssColorHigh = unpremultiply(rgssColorHigh * 0.25);
 
 	vec4 rgssColor = mix(rgssColorLow, rgssColorHigh, mipBlend);
 
@@ -93,7 +111,14 @@ void main() {
 	if (color.a == 0.0) discard;
 	color = mix(FogColor * vec4(1, 1, 1, color.a), color, ChunkVisibility);
 
-	ivec4 ctrlF = ivec4(textureLod(Sampler0, texCoord0, 0) * 255.0 + 0.5);
+	// Snap to the nearest texel centre before reading the control alpha so that
+	// bilinear interpolation across an opaque/transparent border cannot produce
+	// a blended alpha value that accidentally hits one of the discard cases
+	// (1, 2, 3, 25) and carves dark outline holes into alpha-cutout geometry.
+	vec2 ctrlPixelSize = 1.0f / TextureSize;
+	vec2 ctrlTexelCoords = texCoord0 / ctrlPixelSize;
+	vec2 ctrlTexelCenter = (floor(ctrlTexelCoords) + 0.5) * ctrlPixelSize;
+	ivec4 ctrlF = ivec4(textureLod(Sampler0, ctrlTexelCenter, 0) * 255.0 + 0.5);
 
 	switch (ctrlF.a) {
 		case 251: if (Emissives) color = mix(color, vec4(color.rgb, 1.0), color.a); break;
@@ -101,7 +126,7 @@ void main() {
 		case 249: if (Emissives) color = mix(color, vec4(color.rgb, 1.0), color.a); break;
 		case 25: case 3: case 2: case 1: discard;
 		default:
-		color *= vertexColor;
+		//color *= vertexColor;
 
 		vec3 dotLuminance = vertexLight.rgb * vec3(0.114, 0.299, 0.587);
 		float luminance = dotLuminance.r + dotLuminance.g + dotLuminance.b;
