@@ -71,8 +71,8 @@
 "options.difficulty.hard":"Hard \uE02A",
 
 "entity.minecraft.ender_dragon":"§f\uE004",
-"entity.minecraft.wither":"§f\uE005",
-"event.minecraft.raid":" \uE006",
+"entity.minecraft.wither":"§f\uE006",
+"event.minecraft.raid":" \uE005",
 
 "pack.dropInfo":"Drag and drop files into this window to add packs",
 "pack.available.title":"Available",
