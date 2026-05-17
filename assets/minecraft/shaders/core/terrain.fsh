@@ -109,7 +109,6 @@ vec4 sampleRGSS(sampler2D source, vec2 uv, vec2 pixelSize) {
 void main() {
 	vec4 color = (UseRgss == 1 ? sampleRGSS(Sampler0, texCoord0, 1.0f / TextureSize) : sampleNearest(Sampler0, texCoord0, 1.0f / TextureSize)) * vertexColor;
 	if (color.a == 0.0) discard;
-	color = mix(FogColor * vec4(1, 1, 1, color.a), color, ChunkVisibility);
 
 	// Snap to the nearest texel centre before reading the control alpha so that
 	// bilinear interpolation across an opaque/transparent border cannot produce
@@ -117,13 +116,21 @@ void main() {
 	// (1, 2, 3, 25) and carves dark outline holes into alpha-cutout geometry.
 	vec2 ctrlPixelSize = 1.0f / TextureSize;
 	vec2 ctrlTexelCoords = texCoord0 / ctrlPixelSize;
-	vec2 ctrlTexelCenter = (floor(ctrlTexelCoords) + 0.5) * ctrlPixelSize;
+	vec2 ctrlTexelCenter = (round(ctrlTexelCoords - 0.5) + 0.5) * ctrlPixelSize;
 	ivec4 ctrlF = ivec4(textureLod(Sampler0, ctrlTexelCenter, 0) * 255.0 + 0.5);
 
+	// Recover the texture color before the lightmap was applied, so emissive
+	// blocks can be shown at full brightness regardless of ambient light level.
+	// vertexColor = Color * lightmap, vertexLight = lightmap, so dividing out
+	// vertexLight gives us Color * rawTexture without the lightmap darkening.
+	vec4 emissiveColor = vec4(all(greaterThan(vertexLight.rgb, vec3(0.0))) ? color.rgb / vertexLight.rgb : color.rgb, color.a);
+
 	switch (ctrlF.a) {
-		case 251: if (Emissives) color = mix(color, vec4(color.rgb, 1.0), color.a); break;
-		case 250: if (Emissives) color = mix(color, vec4(color.rgb, 1.0), color.a); color *= vertexColor; break;
-		case 249: if (Emissives) color = mix(color, vec4(color.rgb, 1.0), color.a); break;
+		// Emissive cases: restore full-brightness colour before fog so the
+		// lightmap darkening and ChunkVisibility don't suppress the glow.
+		case 251: if (Emissives) color = vec4(emissiveColor.rgb, 1.0); break;
+		case 250: if (Emissives) color = vec4(emissiveColor.rgb * vertexColor.rgb, 1.0); break;
+		case 249: if (Emissives) color = vec4(emissiveColor.rgb, 1.0); break;
 		case 25: case 3: case 2: case 1: discard;
 		default:
 		//color *= vertexColor;
@@ -136,6 +143,10 @@ void main() {
 		float lightFactor = mix(1.2, 0.0, smoothstep(0.0, 3.5, vertexDistance)) * (1.0 - luminance) + 1.2;
 
 		color.rgb = mix(vec3(brightness * 0.5), color.rgb, luminance) * lightFactor;
+
+		// Apply ChunkVisibility fog only for non-emissive blocks so that the End's
+		// void fog doesn't replace distant block colours with solid black.
+		color = mix(FogColor * vec4(1, 1, 1, color.a), color, ChunkVisibility);
 
 		//color *= vertexLight;
 		break;

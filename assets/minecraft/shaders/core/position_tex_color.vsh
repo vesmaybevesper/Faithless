@@ -13,6 +13,8 @@ uniform sampler2D Sampler0;
 
 out vec2 texCoord0;
 out vec4 vertexColor;
+out vec3 skyDir;       // world-space direction for End Skybox cubic projection
+out float isEndSky;    // 1.0 when drawing the End Sky
 
 //[CONTAINER ANIMATIONS]: SPEED, SHEET_FRAMES, TOTAL_FRAMES
 
@@ -36,9 +38,27 @@ void main() {
     texCoord0 = UV0;
     vec3 pos = Position;
 	mat4 MVM = ModelViewMat;
-	
+
+    // ── End Skybox detection ──────────────────────────────────────────────────
+    // When the End Sky texture is 1x1 and set to solid magenta (255, 0, 255, 255)
+    // we know this draw call is for the End Sky.
+    vec4 ctrl1x1 = texture(Sampler0, vec2(0.5));
+    // Detection pixel: RGB (10, 0, 9) / 255 ≈ (0.0392, 0.0, 0.0353), A = 255
+    float endSkyFlag = (textureSize(Sampler0, 0) == ivec2(1) &&
+                        ctrl1x1.r > 0.02 && ctrl1x1.r < 0.08 &&
+                        ctrl1x1.g < 0.02 &&
+                        ctrl1x1.b > 0.02 && ctrl1x1.b < 0.08 &&
+                        ctrl1x1.a > 0.9) ? 1.0 : 0.0;
+    isEndSky = endSkyFlag;
+
+    // Pass the model-space vertex position as the sky direction.
+    // The skybox geometry is a unit cube centred at the camera so Position
+    // already IS the directional vector we need.
+    skyDir = Position;
+    // ─────────────────────────────────────────────────────────────────────────
+
     int vertID = gl_VertexID % 4;
-    ivec4 ctrlL = ivec4(texture(Sampler0, vec2(0)) * 255 + 0.5);
+    ivec4 ctrlL = ivec4(ctrl1x1 * 255 + 0.5);
 	
     switch (ctrlL.a) {
     case 2: //CONTAINERS
