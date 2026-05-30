@@ -58,7 +58,7 @@ void main() {
     // ─────────────────────────────────────────────────────────────────────────
 
     int vertID = gl_VertexID % 4;
-    ivec4 ctrlL = ivec4(ctrl1x1 * 255 + 0.5);
+	ivec4 ctrlL = ivec4(texture(Sampler0, vec2(0)) * 255 + 0.5);
 	
     switch (ctrlL.a) {
     case 2: //CONTAINERS
