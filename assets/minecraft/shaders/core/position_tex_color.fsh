@@ -4,6 +4,7 @@
 #moj_import <frag_utils.glsl>
 #moj_import <config.glsl>
 #moj_import <globals.glsl>
+#moj_import <config.glsl>
 
 uniform sampler2D Sampler0;
 

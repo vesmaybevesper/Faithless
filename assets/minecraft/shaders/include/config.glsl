@@ -165,6 +165,6 @@
 		#define Bloom true					// Bloom effect                     				//X
 		#define Sun_Moon_Angle 1.0			// Sun/Moon Angle                   				//X
 		#define Skybox true					// Custom Overworld Skybox          				//X
-		#define End_Skybox true				// Custom End skybox                				//X
+		#define End_Skybox 0				// Custom End skybox   1=enabled 0=disabled         //X
 
 // ============================================================================

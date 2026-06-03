@@ -133,22 +133,9 @@ void main() {
 		case 249: if (Emissives) color = vec4(emissiveColor.rgb, 1.0); break;
 		case 25: case 3: case 2: case 1: discard;
 		default:
-		//color *= vertexColor;
-
-		vec3 dotLuminance = vertexLight.rgb * vec3(0.114, 0.299, 0.587);
-		float luminance = dotLuminance.r + dotLuminance.g + dotLuminance.b;
-		vec3 dotBrightness = color.rgb * vec3(0.299, 0.587, 0.114);
-		float brightness = (dotBrightness.r + dotBrightness.g + dotBrightness.b);
-
-		float lightFactor = mix(1.2, 0.0, smoothstep(0.0, 3.5, vertexDistance)) * (1.0 - luminance) + 1.2;
-
-		color.rgb = mix(vec3(brightness * 0.5), color.rgb, luminance) * lightFactor;
-
 		// Apply ChunkVisibility fog only for non-emissive blocks so that the End's
 		// void fog doesn't replace distant block colours with solid black.
 		color = mix(FogColor * vec4(1, 1, 1, color.a), color, ChunkVisibility);
-
-		//color *= vertexLight;
 		break;
 	}
 	#ifdef ALPHA_CUTOUT

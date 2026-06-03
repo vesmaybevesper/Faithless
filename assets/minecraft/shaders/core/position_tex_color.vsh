@@ -4,6 +4,7 @@
 #moj_import <projection.glsl>
 #moj_import <vertex_utils.glsl>
 #moj_import <globals.glsl>
+#moj_import <config.glsl>
 
 in vec3 Position;
 in vec2 UV0;
@@ -39,23 +40,31 @@ void main() {
     vec3 pos = Position;
 	mat4 MVM = ModelViewMat;
 
-    // // ── End Skybox detection ──────────────────────────────────────────────────
-    // // When the End Sky texture is 1x1 and set to solid magenta (255, 0, 255, 255)
-    // // we know this draw call is for the End Sky.
-    // vec4 ctrl1x1 = texture(Sampler0, vec2(0.5));
-    // // Detection pixel: RGB (10, 0, 9) / 255 ≈ (0.0392, 0.0, 0.0353), A = 255
-    // float endSkyFlag = (textureSize(Sampler0, 0) == ivec2(1) &&
-    //                     ctrl1x1.r > 0.02 && ctrl1x1.r < 0.08 &&
-    //                     ctrl1x1.g < 0.02 &&
-    //                     ctrl1x1.b > 0.02 && ctrl1x1.b < 0.08 &&
-    //                     ctrl1x1.a > 0.9) ? 1.0 : 0.0;
-    // isEndSky = endSkyFlag;
+     // ── End Skybox detection ──────────────────────────────────────────────────
+     // When the End Sky texture is 1x1 and set to solid magenta (255, 0, 255, 255)
+     // we know this draw call is for the End Sky.
+     vec4 ctrl1x1 = texture(Sampler0, vec2(0.5));
+     // Detection pixel: RGB (10, 0, 9) / 255 ≈ (0.0392, 0.0, 0.0353), A = 255
+	float endSkyFlag = (textureSize(Sampler0, 0) == ivec2(1) &&
+                         ctrl1x1.r > 0.02 && ctrl1x1.r < 0.08 &&
+                         ctrl1x1.g < 0.02 &&
+                         ctrl1x1.b > 0.02 && ctrl1x1.b < 0.08 &&
+                         ctrl1x1.a > 0.9) ? 1.0 : 0.0;
 
-    // // Pass the model-space vertex position as the sky direction.
-    // // The skybox geometry is a unit cube centred at the camera so Position
-    // // already IS the directional vector we need.
-    // skyDir = Position;
-    // // ─────────────────────────────────────────────────────────────────────────
+	switch (End_Skybox) {
+		case 1:
+		isEndSky = endSkyFlag;
+		break;
+		case 2:
+		isEndSky = 0.0;
+		break;
+	}
+
+     // Pass the model-space vertex position as the sky direction.
+     // The skybox geometry is a unit cube centred at the camera so Position
+     // already IS the directional vector we need.
+     skyDir = Position;
+     // ─────────────────────────────────────────────────────────────────────────
 
     int vertID = gl_VertexID % 4;
 	ivec4 ctrlL = ivec4(texture(Sampler0, vec2(0)) * 255 + 0.5);
@@ -86,13 +95,7 @@ void main() {
 		
 		texCoord0.y = (frameIndex + texCoord0.y) / animParams[1];		
 		break;
-    case 3: //SUN & MOON
-		MVM *= mat4(
-			0.9397, 0,		0.3420, 0,
-			0.2418, 0.707, -0.6645, 0,
-		-0.2418, 0.707,  0.6645, 0,
-			0,		0,		0,		1
-		); break;
+
     default: //case 1: SPRITES
 		ivec4 ctrlV = ivec4(texture(Sampler0, UV0 - 0.00001 * corners[vertID]) * 255.0 + 0.5);
 		
