@@ -5,3 +5,4 @@ Shulker boxes in hand
 Incorrect lantern translucency
 fish are... weird
 chests are invisible in the inventory
+ominious banners invis in the inventory
