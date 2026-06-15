@@ -1,0 +1,6 @@
+Things that are broken (growing list):
+Particles (running, eat, breaking blocks)
+Invetory player model
+Shulker boxes in hand
+Incorrect lantern translucency
+fish are... weird
