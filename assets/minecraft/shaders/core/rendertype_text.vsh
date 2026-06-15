@@ -154,7 +154,7 @@ void main() {
 		}
 	}
 	
-	vertexColor = color * texelFetch(Sampler2, UV2 / 16, 0);
+	vertexColor = color; // Prev: * texelFetch(Sampler2, UV2 / 16, 0)
     vertexDistance = fog_cylindrical_distance(Position);
     gl_Position = ProjMat * ModelViewMat * vec4(pos, 1.0);
 }
