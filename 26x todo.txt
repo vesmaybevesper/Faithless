@@ -4,3 +4,4 @@ Invetory player model
 Shulker boxes in hand
 Incorrect lantern translucency
 fish are... weird
+chests are invisible in the inventory
