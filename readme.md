@@ -1,6 +1,6 @@
 # Faithless 
 
-Current goal version: `1.21.11`
+Current goal version: `26.1.x`
 
 ## A fresh take on the classic Minecraft.
 
