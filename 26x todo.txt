@@ -1,12 +1,12 @@
 Things that are broken (growing list):
-Particles (running, eat, breaking blocks)
 Invetory player model
 Shulker boxes in hand
 Incorrect lantern translucency
 fish are... weird
 chests are invisible in the inventory
 ominious banners invis in the inventory
-bubles can be seen thropugh blocks
+bubles can be seen through blocks
+water drops during rain can be seen through blocks
 All inventory GUIs broken
 enderman texture looks have a white overlay
 enderman head freaks out, glitches around
