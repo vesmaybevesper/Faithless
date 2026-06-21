@@ -6,3 +6,7 @@ Incorrect lantern translucency
 fish are... weird
 chests are invisible in the inventory
 ominious banners invis in the inventory
+bubles can be seen thropugh blocks
+All inventory GUIs broken
+enderman texture looks have a white overlay
+enderman head freaks out, glitches around
